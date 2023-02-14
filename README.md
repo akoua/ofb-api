@@ -8,7 +8,7 @@ Git repository of the RESTful API for the OFB (Office français de la biodiversi
     ```
 2. Create MySQL database
     ```
-   create database ofb_api
+   create database ofb_db
     ```
 3. Change mysql username and password as per your installation
    - Open src/main/resources/application.yml
