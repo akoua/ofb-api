@@ -1,7 +1,7 @@
 # OFB API
 Git repository of the RESTful API for the OFB (Office français de la biodiversité) project.
 
-## Steps to setup
+## Steps to set up
 1. Clone the repository
     ```
     git clone https://gitlab.istic.univ-rennes1.fr/m2-miage-mmm/ofb-api.git
