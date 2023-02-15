@@ -1,12 +1,13 @@
 package com.istic.ofbapi.service.impl;
 
+import com.istic.ofbapi.exception.ResourceNotFoundException;
 import com.istic.ofbapi.mapper.SheetMapper;
 import com.istic.ofbapi.model.Sheet;
-import com.istic.ofbapi.payload.PagedResponse;
-import com.istic.ofbapi.payload.SheetGetDto;
-import com.istic.ofbapi.payload.SheetPostDto;
+import com.istic.ofbapi.payload.*;
 import com.istic.ofbapi.repository.SheetRepository;
+import com.istic.ofbapi.repository.UserRepository;
 import com.istic.ofbapi.service.SheetService;
+import com.istic.ofbapi.utils.AppUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,25 +17,29 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
-import static com.istic.ofbapi.utils.AppConstants.CREATED_AT;
+import static com.istic.ofbapi.utils.AppConstants.*;
 
 @Service
 @AllArgsConstructor
 public class SheetServiceImpl implements SheetService {
     private final SheetRepository sheetRepository;
 
+    private final UserRepository userRepository;
+
     private final SheetMapper sheetMapper;
 
     @Override
     public SheetGetDto createSheet(SheetPostDto sheetPostDto) {
+        userRepository.findById(sheetPostDto.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException(USER, ID, sheetPostDto.getUserId()));
         Sheet sheet = sheetMapper.sheetPostDtoToSheet(sheetPostDto);
         return sheetMapper.sheetToSheetGetDto(sheetRepository.save(sheet));
     }
 
     @Override
     public PagedResponse<SheetGetDto> readAllSheets(Integer page, Integer size) {
+        AppUtils.validatePageNumberAndSize(page, size);
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
 
         Page<Sheet> sheetsPage = sheetRepository.findAll(pageable);
@@ -45,6 +50,7 @@ public class SheetServiceImpl implements SheetService {
 
     @Override
     public PagedResponse<SheetGetDto> readSheetsByUser(Long userId, int page, int size) {
+        AppUtils.validatePageNumberAndSize(page, size);
 
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
 
@@ -71,7 +77,7 @@ public class SheetServiceImpl implements SheetService {
 
     @Override
     public PagedResponse<SheetGetDto> readSheetsByUserAndCampaign(Long userId, Long campaignId, int page, int size) {
-
+        AppUtils.validatePageNumberAndSize(page, size);
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
 
         Page<Sheet> sheetsPage = sheetRepository.findAll(pageable);
@@ -82,27 +88,25 @@ public class SheetServiceImpl implements SheetService {
 
     @Override
     public SheetGetDto readSheet(Long id) {
-        Optional<Sheet> sheetOptional = sheetRepository.findById(id);
-        return sheetOptional.map(sheetMapper::sheetToSheetGetDto).orElse(null);
+        Sheet sheet = sheetRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(SHEET, ID, id));
+        return sheetMapper.sheetToSheetGetDto(sheet);
     }
 
     @Override
-    public SheetGetDto updateSheet(Long id, SheetPostDto sheetPostDto) {
-        Sheet updatedSheet = sheetMapper.sheetPostDtoToSheet(sheetPostDto);
-        Optional<Sheet> sheetOptional = sheetRepository.findById(id);
-        if (sheetOptional.isPresent()) {
-            Sheet sheet = sheetOptional.get();
-            sheet.setLongitude(updatedSheet.getLongitude());
-            sheet.setLatitude(updatedSheet.getLatitude());
-            sheet.setDescription(updatedSheet.getDescription());
-            sheet.setPhotoLinks(updatedSheet.getPhotoLinks());
-            return sheetMapper.sheetToSheetGetDto(sheetRepository.save(sheet));
-        }
-        return null;
+    public SheetGetDto updateSheet(Long id, SheetPutDto sheetPutDto) {
+        Sheet sheet = sheetRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(SHEET, ID, id));
+        Sheet updatedSheet = sheetMapper.sheetPutDtoToSheet(sheetPutDto);
+        sheet.setLongitude(updatedSheet.getLongitude());
+        sheet.setLatitude(updatedSheet.getLatitude());
+        sheet.setDescription(updatedSheet.getDescription());
+        sheet.setPhotoLinks(updatedSheet.getPhotoLinks());
+        return sheetMapper.sheetToSheetGetDto(sheetRepository.save(sheet));
     }
 
     @Override
-    public void deleteSheet(Long id) {
-        sheetRepository.deleteById(id);
+    public ApiResponse deleteSheet(Long id) {
+        Sheet sheet = sheetRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(SHEET, ID, id));
+        sheetRepository.delete(sheet);
+        return new ApiResponse(Boolean.TRUE, "You successfully deleted post");
     }
 }

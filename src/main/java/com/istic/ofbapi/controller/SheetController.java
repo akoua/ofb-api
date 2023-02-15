@@ -1,8 +1,6 @@
 package com.istic.ofbapi.controller;
 
-import com.istic.ofbapi.payload.PagedResponse;
-import com.istic.ofbapi.payload.SheetGetDto;
-import com.istic.ofbapi.payload.SheetPostDto;
+import com.istic.ofbapi.payload.*;
 import com.istic.ofbapi.service.SheetService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,7 +27,6 @@ public class SheetController {
                                                                      @RequestParam(value = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) Integer size,
                                                                      @RequestParam(value = "userId", required = false) Long userId,
                                                                      @RequestParam(value = "campaignId", required = false) Long campaignId) {
-
         if (userId != null && campaignId != null) {
             return new ResponseEntity<>(sheetService.readSheetsByUserAndCampaign(userId, campaignId, page, size), HttpStatus.OK);
         } else if (userId != null) {
@@ -46,13 +43,12 @@ public class SheetController {
     }
 
     @PutMapping("/{id}")
-    private ResponseEntity<SheetGetDto> updateSheet(@PathVariable(name = "id") Long id, @RequestBody @Valid SheetPostDto sheet) {
+    private ResponseEntity<SheetGetDto> updateSheet(@PathVariable(name = "id") Long id, @RequestBody @Valid SheetPutDto sheet) {
         return new ResponseEntity<>(sheetService.updateSheet(id, sheet), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    private void deleteSheet(@PathVariable(name = "id") Long id) {
-        sheetService.deleteSheet(id);
+    private ResponseEntity<ApiResponse> deleteSheet(@PathVariable(name = "id") Long id) {
+        return new ResponseEntity<>(sheetService.deleteSheet(id), HttpStatus.OK);
     }
 }

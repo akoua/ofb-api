@@ -1,9 +1,6 @@
 package com.istic.ofbapi.service;
 
-import com.istic.ofbapi.payload.PagedResponse;
-import com.istic.ofbapi.payload.SheetGetDto;
-import com.istic.ofbapi.payload.SheetPostDto;
-import org.springframework.http.ResponseEntity;
+import com.istic.ofbapi.payload.*;
 
 
 public interface SheetService {
@@ -19,7 +16,7 @@ public interface SheetService {
 
     SheetGetDto readSheet(Long id);
 
-    SheetGetDto updateSheet(Long id, SheetPostDto sheetPostDto);
+    SheetGetDto updateSheet(Long id, SheetPutDto sheetPutDto);
 
-    void deleteSheet(Long id);
+    ApiResponse deleteSheet(Long id);
 }

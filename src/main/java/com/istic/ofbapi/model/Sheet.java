@@ -1,6 +1,5 @@
 package com.istic.ofbapi.model;
 
-import com.istic.ofbapi.model.audit.DateAudit;
 import lombok.*;
 
 import javax.persistence.*;

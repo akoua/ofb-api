@@ -3,7 +3,7 @@ package com.istic.ofbapi.mapper;
 import com.istic.ofbapi.model.Sheet;
 import com.istic.ofbapi.payload.SheetGetDto;
 import com.istic.ofbapi.payload.SheetPostDto;
-import com.istic.ofbapi.repository.SheetRepository;
+import com.istic.ofbapi.payload.SheetPutDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -21,5 +21,5 @@ public interface SheetMapper {
 
     List<SheetGetDto> sheetsToSheetsGetDto(List<Sheet> sheets);
 
-
+    Sheet sheetPutDtoToSheet(SheetPutDto sheetPutDto);
 }

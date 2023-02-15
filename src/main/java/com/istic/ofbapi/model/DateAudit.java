@@ -1,4 +1,4 @@
-package com.istic.ofbapi.model.audit;
+package com.istic.ofbapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
