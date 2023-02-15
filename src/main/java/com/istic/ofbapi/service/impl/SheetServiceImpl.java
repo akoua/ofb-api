@@ -3,6 +3,7 @@ package com.istic.ofbapi.service.impl;
 import com.istic.ofbapi.exception.ResourceNotFoundException;
 import com.istic.ofbapi.mapper.SheetMapper;
 import com.istic.ofbapi.model.Sheet;
+import com.istic.ofbapi.model.User;
 import com.istic.ofbapi.payload.*;
 import com.istic.ofbapi.repository.SheetRepository;
 import com.istic.ofbapi.repository.UserRepository;
@@ -52,9 +53,12 @@ public class SheetServiceImpl implements SheetService {
     public PagedResponse<SheetGetDto> readSheetsByUser(Long userId, int page, int size) {
         AppUtils.validatePageNumberAndSize(page, size);
 
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException(USER, ID, userId));
+
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
 
-        Page<Sheet> sheetsPage = sheetRepository.findAllByUserId(userId, pageable);
+        Page<Sheet> sheetsPage = sheetRepository.findAllByUser(user, pageable);
 
         return getSheetsFromSheetsPage(sheetsPage);
     }
@@ -77,13 +81,7 @@ public class SheetServiceImpl implements SheetService {
 
     @Override
     public PagedResponse<SheetGetDto> readSheetsByUserAndCampaign(Long userId, Long campaignId, int page, int size) {
-        AppUtils.validatePageNumberAndSize(page, size);
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
-
-        Page<Sheet> sheetsPage = sheetRepository.findAll(pageable);
-
-        return getSheetsFromSheetsPage(sheetsPage);
-
+        return null;
     }
 
     @Override
@@ -107,6 +105,6 @@ public class SheetServiceImpl implements SheetService {
     public ApiResponse deleteSheet(Long id) {
         Sheet sheet = sheetRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(SHEET, ID, id));
         sheetRepository.delete(sheet);
-        return new ApiResponse(Boolean.TRUE, "You successfully deleted post");
+        return new ApiResponse(Boolean.TRUE, "You successfully deleted sheet");
     }
 }
