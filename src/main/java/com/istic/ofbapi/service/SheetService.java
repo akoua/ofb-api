@@ -1,22 +1,23 @@
 package com.istic.ofbapi.service;
 
 import com.istic.ofbapi.payload.*;
+import com.istic.ofbapi.security.UserPrincipal;
 
 
 public interface SheetService {
-    SheetGetDto createSheet(SheetPostDto sheetPostDto);
+    SheetResponse createSheet(SheetRequestOnPost sheetRequestOnPost, UserPrincipal currentUser);
 
-    PagedResponse<SheetGetDto> readAllSheets(Integer page, Integer size);
+    PagedResponse<SheetResponse> readAllSheets(Integer page, Integer size);
 
-    PagedResponse<SheetGetDto> readSheetsByUser(Long userId, int page, int size);
+    PagedResponse<SheetResponse> readSheetsByUser(Long userId, int page, int size);
 
-    PagedResponse<SheetGetDto> readSheetsByCampaign(Long campaignId, int page, int size);
+    PagedResponse<SheetResponse> readSheetsByCampaign(Long campaignId, int page, int size);
 
-    PagedResponse<SheetGetDto> readSheetsByUserAndCampaign(Long userId, Long campaignId, int page, int size);
+    PagedResponse<SheetResponse> readSheetsByUserAndCampaign(Long userId, Long campaignId, int page, int size);
 
-    SheetGetDto readSheet(Long id);
+    SheetResponse readSheet(Long id);
 
-    SheetGetDto updateSheet(Long id, SheetPutDto sheetPutDto);
+    SheetResponse updateSheet(Long id, SheetRequestOnPut sheetRequestOnPut, UserPrincipal currentUser);
 
-    ApiResponse deleteSheet(Long id);
+    ApiResponse deleteSheet(Long id, UserPrincipal currentUser);
 }

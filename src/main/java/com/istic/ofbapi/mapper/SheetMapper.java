@@ -1,9 +1,9 @@
 package com.istic.ofbapi.mapper;
 
 import com.istic.ofbapi.model.Sheet;
-import com.istic.ofbapi.payload.SheetGetDto;
-import com.istic.ofbapi.payload.SheetPostDto;
-import com.istic.ofbapi.payload.SheetPutDto;
+import com.istic.ofbapi.payload.SheetRequestOnPost;
+import com.istic.ofbapi.payload.SheetRequestOnPut;
+import com.istic.ofbapi.payload.SheetResponse;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,13 +13,13 @@ import java.util.List;
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface SheetMapper {
 
-    @Mapping(target = "user.id", source = "userId")
-    Sheet sheetPostDtoToSheet(SheetPostDto sheetPostDto);
+    Sheet sheetRequestOnPostToSheet(SheetRequestOnPost sheetRequestOnPost);
 
     @Mapping(target = "userId", source = "user.id")
-    SheetGetDto sheetToSheetGetDto(Sheet sheet);
+    SheetResponse sheetToSheetResponse(Sheet sheet);
 
-    List<SheetGetDto> sheetsToSheetsGetDto(List<Sheet> sheets);
+    List<SheetResponse> sheetsToSheetResponses(List<Sheet> sheets);
 
-    Sheet sheetPutDtoToSheet(SheetPutDto sheetPutDto);
+    Sheet sheetRequestOnPutToSheet(SheetRequestOnPut sheetRequestOnPut);
+    
 }

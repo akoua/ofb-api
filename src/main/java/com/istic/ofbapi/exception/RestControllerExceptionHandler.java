@@ -33,6 +33,16 @@ public class RestControllerExceptionHandler {
         return new ResponseEntity<>(apiResponse, status);
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<ApiResponse> resolveException(UnauthorizedException exception) {
+
+        ApiResponse apiResponse = exception.getApiResponse();
+
+        return new ResponseEntity<>(apiResponse, HttpStatus.UNAUTHORIZED);
+    }
+
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseBody
@@ -48,6 +58,14 @@ public class RestControllerExceptionHandler {
         ApiResponse apiResponse = exception.getApiResponse();
 
         return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseBody
+    public ResponseEntity<ApiResponse> resolveException(AccessDeniedException exception) {
+        ApiResponse apiResponse = exception.getApiResponse();
+
+        return new ResponseEntity<>(apiResponse, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})

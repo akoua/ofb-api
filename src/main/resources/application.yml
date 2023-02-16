@@ -14,7 +14,10 @@ spring:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
     time-zone: UTC
+app:
+  jwtSecret: secret
+  jwtExpirationInMs: 3600000
 
-springdoc:
-  swagger-ui:
-    path: /api
+cors:
+  allowedOrings: '*'
+
