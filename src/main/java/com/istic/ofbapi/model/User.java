@@ -43,6 +43,10 @@ public class User extends DateAudit {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Sheet> sheets = new ArrayList<>();
 
+    @ToString.Exclude
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Comment> comments = new ArrayList<>();
+
     public User(String firstName, String lastName, String username, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;

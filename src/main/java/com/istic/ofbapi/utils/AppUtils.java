@@ -17,4 +17,5 @@ public class AppUtils {
             throw new BadRequestException("Page size must not be greater than " + AppConstants.MAX_PAGE_SIZE);
         }
     }
+
 }
