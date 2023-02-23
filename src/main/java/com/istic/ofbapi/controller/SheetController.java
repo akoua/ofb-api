@@ -22,7 +22,8 @@ public class SheetController {
     private final SheetService sheetService;
 
     @PostMapping("/v1/sheets")
-    private ResponseEntity<SheetResponse> createSheet(@RequestBody @Valid SheetRequestOnPost sheet, @CurrentUser UserPrincipal currentUser) {
+    private ResponseEntity<SheetResponse> createSheet(@RequestBody @Valid SheetRequestOnPost sheet,
+                                                      @CurrentUser UserPrincipal currentUser) {
         return new ResponseEntity<>(sheetService.createSheet(sheet, currentUser), HttpStatus.CREATED);
     }
 

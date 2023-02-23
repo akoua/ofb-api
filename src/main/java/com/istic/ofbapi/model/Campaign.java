@@ -1,14 +1,17 @@
 package com.istic.ofbapi.model;
 
+import com.istic.ofbapi.model.taxon.Taxon;
 import lombok.*;
 
 import javax.persistence.*;
-
+import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
+@Entity
 public class Campaign extends DateAudit{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +23,24 @@ public class Campaign extends DateAudit{
     @Column(name = "description", nullable = false)
     private String description;
 
-    private Taxon taxon;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToMany
+    @JoinTable(
+            name="campaign_taxon",
+            joinColumns=@JoinColumn(name="campaign_id", referencedColumnName="id"),
+            inverseJoinColumns=@JoinColumn(name="taxon_id", referencedColumnName="id"))
+    private List<Taxon> taxon;
+
+    @Column(nullable = false)
     private Area area;
+
+    @Column(nullable = false)
+    private Date startDate;
+
+    @Column(nullable = false)
+    private Date endDate;
 
 }

@@ -92,7 +92,7 @@ public class SheetServiceImpl implements SheetService {
 
     @Override
     public SheetResponse readSheet(Long id) {
-        Sheet sheet = sheetRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(SHEET, ID, id));
+        Sheet sheet = sheetRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(CAMPAIGN, ID, id));
         return sheetMapper.sheetToSheetResponse(sheet);
     }
 

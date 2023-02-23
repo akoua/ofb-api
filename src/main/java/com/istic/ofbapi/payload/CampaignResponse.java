@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Data
 @AllArgsConstructor
-public class CampaignGetDto {
+public class CampaignResponse {
     private Long id;
     private String title;
     private Date startDate;
