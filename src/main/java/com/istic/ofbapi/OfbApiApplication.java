@@ -1,6 +1,6 @@
 package com.istic.ofbapi;
 
-import com.istic.ofbapi.security.JwtAuthenticationFilter;
+import com.istic.ofbapi.config.ConfigProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -11,7 +11,7 @@ import javax.annotation.PostConstruct;
 import java.util.TimeZone;
 
 @SpringBootApplication
-@EntityScan(basePackageClasses = {OfbApiApplication.class, Jsr310Converters.class})
+@EntityScan(basePackageClasses = {OfbApiApplication.class, Jsr310Converters.class, ConfigProperties.class})
 public class OfbApiApplication {
     
     public static void main(String[] args) {
@@ -23,9 +23,9 @@ public class OfbApiApplication {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter();
-    }
+//    @Bean
+//    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+//        return new JwtAuthenticationFilter();
+//    }
 
 }

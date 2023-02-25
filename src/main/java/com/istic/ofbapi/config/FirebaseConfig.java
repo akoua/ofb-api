@@ -1,0 +1,66 @@
+package com.istic.ofbapi.config;
+
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+@Configuration
+@EnableConfigurationProperties(ConfigProperties.class)
+@Slf4j
+public class FirebaseConfig {
+
+    private final ConfigProperties firebaseProperties;
+
+    public FirebaseConfig(ConfigProperties firebaseProperties) {
+        this.firebaseProperties = firebaseProperties;
+    }
+
+    @Bean
+    GoogleCredentials googleCredentials() {
+        try {
+            log.info("Firebase Creds: {}", firebaseProperties.getServiceAccount());
+            if (firebaseProperties.getServiceAccount() != null) {
+                try( InputStream is = firebaseProperties.getServiceAccount().getInputStream()) {
+                    return GoogleCredentials.fromStream(is);
+                }
+            }
+            else {
+                // Use standard credentials chain. Useful when running inside GKE
+                return GoogleCredentials.getApplicationDefault();
+            }
+        }
+        catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
+    }
+
+    @Bean
+    FirebaseApp firebaseApp(GoogleCredentials credentials) {
+        log.info("Firebase Creds: {}", credentials);
+        FirebaseOptions options = FirebaseOptions.builder()
+                .setCredentials(credentials)
+                .build();
+
+        return FirebaseApp.initializeApp(options);
+    }
+
+    @Bean
+    FirebaseMessaging firebaseMessaging(FirebaseApp firebaseApp) {
+        return FirebaseMessaging.getInstance(firebaseApp);
+    }
+
+    @Bean
+    FirebaseAuth firebaseAuthentication(FirebaseApp firebaseApp) {
+        return FirebaseAuth.getInstance(firebaseApp);
+    }
+
+}

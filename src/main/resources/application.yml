@@ -2,10 +2,10 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/ofb_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
-    password:
+    password: rootroot
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
@@ -14,10 +14,23 @@ spring:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
     time-zone: UTC
+  application:
+    name: ofbApiApplication
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          #          jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
+          #          jwk-set-uri: https://www.googleapis.com/service_accounts/v1/jwk/securetoken%40system.gserviceaccount.com
+          issuer-uri: https://securetoken.google.com/ofbmobileapp
 app:
   jwtSecret: secret
   jwtExpirationInMs: 3600000
 
 cors:
   allowedOrings: '*'
+
+custom:
+  path:
+    firebase.service-account: classpath:firebase-adminsdk.json
 

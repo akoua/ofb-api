@@ -9,15 +9,7 @@ import javax.validation.constraints.Size;
 
 @Data
 @AllArgsConstructor
-public class UserRequest {
-    @NotBlank
-    @Size(max = 40)
-    private String firstName;
-
-    @NotBlank
-    @Size(max = 40)
-    private String lastName;
-
+public class RegistrationRequest {
     @NotBlank
     @Size(min = 5, max = 15)
     private String username;
@@ -27,6 +19,6 @@ public class UserRequest {
     private String email;
 
     @NotBlank
-    @Size(min = 5)
+    @Size(min = 8)
     private String password;
 }
