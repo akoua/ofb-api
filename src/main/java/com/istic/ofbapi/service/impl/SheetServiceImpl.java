@@ -102,6 +102,7 @@ public class SheetServiceImpl implements SheetService {
         if (sheet.getUser().getId().equals(currentUser.getId())
                 || currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))) {
             Sheet updatedSheet = sheetMapper.sheetRequestOnPutToSheet(sheetRequestOnPut);
+            sheet.setTitle(updatedSheet.getTitle());
             sheet.setLongitude(updatedSheet.getLongitude());
             sheet.setLatitude(updatedSheet.getLatitude());
             sheet.setDescription(updatedSheet.getDescription());

@@ -10,6 +10,8 @@ import java.util.List;
 @AllArgsConstructor
 public class SheetResponse {
     private Long id;
+    private String title;
+
     private Long campaignId;
     private Long userId;
     private String description;
