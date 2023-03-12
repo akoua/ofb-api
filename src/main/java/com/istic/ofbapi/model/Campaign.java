@@ -23,9 +23,6 @@ public class Campaign extends DateAudit{
     @Column(name = "description", nullable = false)
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
     @ManyToMany
     @JoinTable(
@@ -42,5 +39,6 @@ public class Campaign extends DateAudit{
 
     @Column(nullable = false)
     private Date endDate;
+
 
 }

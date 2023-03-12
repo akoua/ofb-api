@@ -1,6 +1,6 @@
 package com.istic.ofbapi.model.taxon;
 
-public enum TaxonName {
+public enum TaxonType {
     ANIMAL,
     PLANT,
 }
