@@ -13,7 +13,6 @@ public interface SheetRepository extends JpaRepository<Sheet, Long> {
     Page<Sheet> findAllByUser(User user, Pageable pageable);
 
     Page<Sheet> findAllByCampaign(Campaign campaign, Pageable pageable);
-
-
+    
     Page<Sheet> findAllByUserAndCampaign(User user, Campaign campaign, Pageable pageable);
 }
