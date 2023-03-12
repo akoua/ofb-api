@@ -12,7 +12,6 @@ import java.util.List;
 public interface CampaignMapper {
     Campaign campaignRequestOnPostToCampaign(CampaingRequestOnPost campaingRequestOnPost);
 
-    @Mapping(target = "id", source = "user.id")
     CampaignResponse campaignToCampaignResponse(Campaign campaign);
 
     List<CampaignResponse> campaignsToCampaignResponses(List<Campaign> Campaigns);

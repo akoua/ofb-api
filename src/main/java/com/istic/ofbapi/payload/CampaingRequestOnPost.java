@@ -1,11 +1,12 @@
 package com.istic.ofbapi.payload;
 
+import com.istic.ofbapi.model.Area;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.Instant;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -19,9 +20,12 @@ public class CampaingRequestOnPost {
     private String description;
 
     @NotNull
-    private Instant startDate;
+    private Area area;
 
     @NotNull
-    private Instant endDate;
+    private Date startDate;
+
+    @NotNull
+    private Date endDate;
 
 }
