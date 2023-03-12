@@ -19,14 +19,14 @@ public class UserRequest {
     private String lastName;
 
     @NotBlank
-    @Size(min = 5, max = 15)
+    @Size(min = 3, max = 15)
     private String username;
 
     @NotBlank
     @Email
     private String email;
 
-    @NotBlank
-    @Size(min = 8)
+    //    @JsonIgnoreProperties(ignoreUnknown = true)
+//    @Size(min = 5)
     private String password;
 }
