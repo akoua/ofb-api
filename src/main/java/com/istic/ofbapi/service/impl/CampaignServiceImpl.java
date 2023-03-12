@@ -82,17 +82,32 @@ public class CampaignServiceImpl implements CampaignService {
 
         if(campaignRepository.count() == 0){
             //Pour une campagne
-            Taxon taxon = new Taxon(TaxonType.ANIMAL, "Mamifere");
-            Area area = new Area("Rennes", "France", "RENNES");
 
-            //Titre et description de la campagne
-            //Par deffaut une campagne commence aujourdhui et se termine dans 3 mois plus tard
-            Campaign campaign = setCampaignValues("Abeilles", "Abeilles bleu dans la region");
+            Area area = new Area("Rennes", "Bretagne", "France");
+            initializeCampaignsData("Xylocopes", "Les Xylocopes ou Abeilles charpentières " +
+                    "forment un genre d'insectes hyménoptères de la famille des Apidés. Toutes les " +
+                    "espèces d'abeilles de la tribu Xylocopini sont aujourd'hui classées dans ce genre.",
+                    TaxonType.ANIMAL, "ovipares", area);
 
+            Area area2 = new Area("Paris", "Ile-de-France", "France");
+            initializeCampaignsData("Chêne blanc", "Le chêne blanc  est une espèce de " +
+                    "chêne mesurant en général une trentaine de mètres",TaxonType.PLANT, "Cyclobalanopsis ", area2);
 
+            Area area3 = new Area("Lille", "Hauts-de-France", "France");
+            initializeCampaignsData("Quercus phellos", "Quercus phellos, le Chêne à" +
+                    " feuilles de Saule, est une espèce d'arbres du genre Quercus et de la section Lobatae.",
+                    TaxonType.PLANT, " Fagacées", area3);
 
-            addCampaignToRepository(area, campaign,taxon);
+            Area area4 = new Area("Toulouse", "Occitanie ", "France");
+            initializeCampaignsData("Bourdons", "Les bourdons sont des insectes sociaux du " +
+                    "genre Bombus et de la famille des Apidae. Importants pollinisateurs, les différentes " +
+                    "espèces de bourdons se nourrissent du nectar des fleurs et récoltent le pollen pour " +
+                    "nourrir leur larves",TaxonType.ANIMAL, "ovipares", area4);
 
+            Area area5 = new Area("Orléans", "Centre-Val de Loire", "France");
+            initializeCampaignsData("Berger allemand", "Le berger allemand est " +
+                    "une race de chiens tirant son nom de son pays d'origine, l'Allemagne, où elle" +
+                    " est apparue à la fin du XIXᵉ siècle",TaxonType.ANIMAL, "ammifère", area5);
         }
 
 
@@ -105,6 +120,12 @@ public class CampaignServiceImpl implements CampaignService {
 
         return new PagedResponse<>(content, campaignPage.getNumber(), campaignPage.getSize(), campaignPage.getTotalElements(),
                 campaignPage.getTotalPages(), campaignPage.isLast());
+    }
+
+    private void initializeCampaignsData(String title, String description, TaxonType taxonType, String taxonName, Area area){
+        Campaign campaign = setCampaignValues(title, description);
+        Taxon taxon = new Taxon(taxonType, taxonName);
+        addCampaignToRepository(area, campaign,taxon);
     }
 
     private Campaign setCampaignValues(String title, String description){
