@@ -11,6 +11,10 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class SheetRequestOnPut {
+
+    @NotBlank
+    private String title;
+
     @NotBlank
     private String description;
 

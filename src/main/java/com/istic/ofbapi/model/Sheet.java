@@ -3,6 +3,7 @@ package com.istic.ofbapi.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,6 +17,9 @@ public class Sheet extends DateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private String title;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -32,5 +36,8 @@ public class Sheet extends DateAudit {
 
     @Column(nullable = false)
     private Double latitude;
+
+    @OneToMany(mappedBy = "sheet", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
 }

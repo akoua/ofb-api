@@ -12,6 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 public class SheetRequestOnPost {
 
+    @NotBlank
+    private String title;
+
     @NotNull
     private Long campaignId;
 
