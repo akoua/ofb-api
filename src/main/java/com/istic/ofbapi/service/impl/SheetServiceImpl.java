@@ -44,8 +44,11 @@ public class SheetServiceImpl implements SheetService {
     public SheetResponse createSheet(SheetRequestOnPost sheetRequestOnPost, UserPrincipal currentUser) {
         User user = userRepository.findById(currentUser.getId())
                 .orElseThrow(() -> new ResourceNotFoundException(USER, ID, currentUser.getId()));
+        Campaign campaign = campaignRepository.findById(sheetRequestOnPost.getCampaignId())
+                .orElseThrow(() -> new ResourceNotFoundException(CAMPAIGN, ID, sheetRequestOnPost.getCampaignId()));
         Sheet sheet = sheetMapper.sheetRequestOnPostToSheet(sheetRequestOnPost);
         sheet.setUser(user);
+        sheet.setCampaign(campaign);
         LOGGER.info(sheet.getPhotoLinks().toString());
         return sheetMapper.sheetToSheetResponse(sheetRepository.save(sheet));
     }
