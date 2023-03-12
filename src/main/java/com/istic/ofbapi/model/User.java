@@ -12,7 +12,9 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@With
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class User extends DateAudit {
     @Id

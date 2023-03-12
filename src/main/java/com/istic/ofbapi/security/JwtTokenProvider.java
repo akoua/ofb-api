@@ -1,5 +1,6 @@
 package com.istic.ofbapi.security;
 
+import com.istic.ofbapi.model.User;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Map;
 
 @Component
 public class JwtTokenProvider {
@@ -19,18 +21,22 @@ public class JwtTokenProvider {
     @Value(value = "${app.jwtExpirationInMs}")
     private int jwtExpirationInMs;
 
-    public String generateToken(Authentication authentication) {
+    public Map<String, User> generateToken(Authentication authentication) {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
-        return Jwts.builder()
+        return Map.of(Jwts.builder()
                 .setSubject(Long.toString(userPrincipal.getId()))
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                .compact();
+                .compact(), new User().withId(userPrincipal.getId())
+                .withFirstName(userPrincipal.getFirstName())
+                .withLastName(userPrincipal.getLastName())
+                .withEmail(userPrincipal.getEmail())
+                .withUsername(userPrincipal.getUsername()));
     }
 
     public Long getUserIdFromJWT(String token) {

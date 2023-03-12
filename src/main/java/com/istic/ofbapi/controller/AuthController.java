@@ -12,7 +12,10 @@ import com.istic.ofbapi.payload.UserRequest;
 import com.istic.ofbapi.repository.RoleRepository;
 import com.istic.ofbapi.repository.UserRepository;
 import com.istic.ofbapi.security.JwtTokenProvider;
+import com.istic.ofbapi.security.UserPrincipal;
+import com.istic.ofbapi.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,10 +33,12 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor
+@Slf4j
 public class AuthController {
     private static final String USER_ROLE_NOT_SET = "User role not set";
 
@@ -46,6 +51,7 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserService userService;
 
     @PostMapping("/v1/auth/sign-in")
     public ResponseEntity<JwtAuthenticationResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -53,9 +59,11 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsernameOrEmail(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        Map.Entry<String, User> jwtUser = jwtTokenProvider.generateToken(authentication).entrySet().iterator().next();
 
-        String jwt = jwtTokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+        log.info("User Id: " + ((UserPrincipal) authentication.getPrincipal()).getId());
+
+        return ResponseEntity.ok(new JwtAuthenticationResponse(jwtUser.getKey(), jwtUser.getValue()));
     }
 
     @PostMapping("/v1/auth/sign-up")
