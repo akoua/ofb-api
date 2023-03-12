@@ -22,6 +22,10 @@ public class Sheet extends DateAudit {
     private String title;
 
     @ManyToOne
+    @JoinColumn(name = "campaign_id")
+    private Campaign campaign;
+    
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -40,4 +44,14 @@ public class Sheet extends DateAudit {
     @OneToMany(mappedBy = "sheet", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
+    public Sheet(String title, Campaign campaign, User user, String description, List<String> photoLinks, Double longitude, Double latitude, List<Comment> comments) {
+        this.title = title;
+        this.campaign = campaign;
+        this.user = user;
+        this.description = description;
+        this.photoLinks = photoLinks;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.comments = comments;
+    }
 }

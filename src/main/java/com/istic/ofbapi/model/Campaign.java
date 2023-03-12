@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,8 +26,7 @@ public class Campaign extends DateAudit {
 
     @Column(name = "description", nullable = false)
     private String description;
-
-
+    
     @ManyToMany
     @JoinTable(
             name = "campaign_taxon",
@@ -42,6 +42,9 @@ public class Campaign extends DateAudit {
 
     @Column(nullable = false)
     private Date endDate;
+
+    @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL)
+    private List<Sheet> sheets = new ArrayList<>();
 
     public Campaign(String title, String description, List<Taxon> taxon, Area area, Date startDate, Date endDate) {
         this.title = title;

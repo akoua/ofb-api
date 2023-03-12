@@ -1,5 +1,6 @@
 package com.istic.ofbapi.repository;
 
+import com.istic.ofbapi.model.Campaign;
 import com.istic.ofbapi.model.Sheet;
 import com.istic.ofbapi.model.User;
 import org.springframework.data.domain.Page;
@@ -11,4 +12,8 @@ import org.springframework.stereotype.Repository;
 public interface SheetRepository extends JpaRepository<Sheet, Long> {
     Page<Sheet> findAllByUser(User user, Pageable pageable);
 
+    Page<Sheet> findAllByCampaign(Campaign campaign, Pageable pageable);
+
+
+    Page<Sheet> findAllByUserAndCampaign(User user, Campaign campaign, Pageable pageable);
 }

@@ -3,10 +3,12 @@ package com.istic.ofbapi.service.impl;
 import com.istic.ofbapi.exception.ResourceNotFoundException;
 import com.istic.ofbapi.exception.UnauthorizedException;
 import com.istic.ofbapi.mapper.SheetMapper;
+import com.istic.ofbapi.model.Campaign;
 import com.istic.ofbapi.model.Sheet;
 import com.istic.ofbapi.model.User;
 import com.istic.ofbapi.model.role.RoleName;
 import com.istic.ofbapi.payload.*;
+import com.istic.ofbapi.repository.CampaignRepository;
 import com.istic.ofbapi.repository.SheetRepository;
 import com.istic.ofbapi.repository.UserRepository;
 import com.istic.ofbapi.security.UserPrincipal;
@@ -34,6 +36,7 @@ public class SheetServiceImpl implements SheetService {
     private final SheetRepository sheetRepository;
 
     private final UserRepository userRepository;
+    private final CampaignRepository campaignRepository;
 
     private final SheetMapper sheetMapper;
 
@@ -80,14 +83,34 @@ public class SheetServiceImpl implements SheetService {
 
     @Override
     public PagedResponse<SheetResponse> readSheetsByCampaign(Long campaignId, int page, int size) {
+        AppUtils.validatePageNumberAndSize(page, size);
 
-        return null;
+        Campaign campaign = campaignRepository.findById(campaignId)
+                .orElseThrow(() -> new ResourceNotFoundException(CAMPAIGN, ID, campaignId));
+
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
+
+        Page<Sheet> sheetsPage = sheetRepository.findAllByCampaign(campaign, pageable);
+
+        return getSheetsFromSheetsPage(sheetsPage);
 
     }
 
     @Override
     public PagedResponse<SheetResponse> readSheetsByUserAndCampaign(Long userId, Long campaignId, int page, int size) {
-        return null;
+        AppUtils.validatePageNumberAndSize(page, size);
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException(USER, ID, userId));
+
+        Campaign campaign = campaignRepository.findById(campaignId)
+                .orElseThrow(() -> new ResourceNotFoundException(CAMPAIGN, ID, campaignId));
+
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
+
+        Page<Sheet> sheetsPage = sheetRepository.findAllByUserAndCampaign(user, campaign, pageable);
+
+        return getSheetsFromSheetsPage(sheetsPage);
     }
 
     @Override

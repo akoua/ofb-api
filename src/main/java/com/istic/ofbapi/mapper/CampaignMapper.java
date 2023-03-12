@@ -2,7 +2,6 @@ package com.istic.ofbapi.mapper;
 
 import com.istic.ofbapi.model.Campaign;
 import com.istic.ofbapi.model.taxon.Taxon;
-import com.istic.ofbapi.payload.CampaignRequestOnPut;
 import com.istic.ofbapi.payload.CampaignResponse;
 import com.istic.ofbapi.payload.CampaingRequestOnPost;
 import com.istic.ofbapi.payload.TaxonResponse;
@@ -17,12 +16,9 @@ import java.util.stream.Collectors;
 public interface CampaignMapper {
     Campaign campaignRequestOnPostToCampaign(CampaingRequestOnPost campaingRequestOnPost);
 
-    //CampaignResponse campaignToCampaignResponse(Campaign campaign);
 
     List<CampaignResponse> campaignsToCampaignResponses(List<Campaign> Campaigns);
-
-    Campaign campaignRequestOnPutToCampaign(CampaignRequestOnPut campaignRequestOnPut);
-
+    
     TaxonResponse taxonToTaxonResponse(Taxon taxon);
 
     default List<TaxonResponse> taxonListToTaxonResponseList(List<Taxon> taxonList) {

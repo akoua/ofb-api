@@ -16,10 +16,11 @@ public interface SheetMapper {
     Sheet sheetRequestOnPostToSheet(SheetRequestOnPost sheetRequestOnPost);
 
     @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "campaignId", source = "campaign.id")
     SheetResponse sheetToSheetResponse(Sheet sheet);
 
     List<SheetResponse> sheetsToSheetResponses(List<Sheet> sheets);
 
     Sheet sheetRequestOnPutToSheet(SheetRequestOnPut sheetRequestOnPut);
-    
+
 }
