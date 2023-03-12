@@ -14,4 +14,6 @@ public class AppConstants {
 
     public static final String CAMPAIGN = "campaign";
 
+    public static final String COMMENT = "comment";
+
 }
