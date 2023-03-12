@@ -21,10 +21,14 @@ public class Taxon {
 
     @Enumerated(EnumType.STRING)
     @NaturalId
-    @Column(name = "name")
-    private TaxonName name;
+    @Column(name = "type")
+    private TaxonType taxonType;
 
-    public Taxon(TaxonName taxonName){
-        this.name = taxonName;
+    @Column(name = "name")
+    private String name;
+
+    public Taxon(TaxonType taxonType,String name ){
+        this.taxonType = taxonType;
+        this.name = name;
     }
 }
