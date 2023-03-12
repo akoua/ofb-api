@@ -29,21 +29,21 @@ public class UserController {
         return new ResponseEntity<>(userIdentityAvailability, HttpStatus.OK);
     }
 
-    @GetMapping("/v1/users//checkEmailAvailability")
+    @GetMapping("/v1/users/checkEmailAvailability")
     public ResponseEntity<UserIdentityAvailability> checkEmailAvailability(@RequestParam(value = "email") String email) {
         UserIdentityAvailability userIdentityAvailability = userService.checkEmailAvailability(email);
         return new ResponseEntity<>(userIdentityAvailability, HttpStatus.OK);
     }
 
     @SecurityRequirement(name = "bearerAuth")
-    @GetMapping("/v1/users//{id}")
+    @GetMapping("/v1/users/{id}")
     public ResponseEntity<UserResponse> readUser(@PathVariable(value = "id") Long id) {
         UserResponse user = userService.readUser(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @SecurityRequirement(name = "bearerAuth")
-    @PutMapping("/v1/users//{id}")
+    @PutMapping("/v1/users/{id}")
     public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UserRequest newUser,
                                                    @PathVariable(value = "id") Long id, @CurrentUser UserPrincipal currentUser) {
         UserResponse updatedUser = userService.updateUser(newUser, id, currentUser);
@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @SecurityRequirement(name = "bearerAuth")
-    @DeleteMapping("/v1/users//{id}")
+    @DeleteMapping("/v1/users/{id}")
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable(value = "id") Long id,
                                                   @CurrentUser UserPrincipal currentUser) {
         ApiResponse apiResponse = userService.deleteUser(id, currentUser);
