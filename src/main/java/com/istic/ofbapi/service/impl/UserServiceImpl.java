@@ -15,6 +15,7 @@ import com.istic.ofbapi.security.UserPrincipal;
 import com.istic.ofbapi.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static com.istic.ofbapi.utils.AppConstants.ID;
@@ -56,7 +57,8 @@ public class UserServiceImpl implements UserService {
             user.setFirstName(updatedUser.getFirstName());
             user.setLastName(updatedUser.getLastName());
             user.setUsername(updatedUser.getUsername());
-            user.setPassword(updatedUser.getPassword());
+            if (!updatedUser.getPassword().isBlank())
+                user.setPassword(new BCryptPasswordEncoder().encode(updatedUser.getPassword()));
             return userMapper.userToUserResponse(userRepository.save(user));
         }
         ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "You don't have permission to edit this sheet");

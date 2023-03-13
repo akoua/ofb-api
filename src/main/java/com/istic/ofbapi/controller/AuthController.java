@@ -13,7 +13,6 @@ import com.istic.ofbapi.repository.RoleRepository;
 import com.istic.ofbapi.repository.UserRepository;
 import com.istic.ofbapi.security.JwtTokenProvider;
 import com.istic.ofbapi.security.UserPrincipal;
-import com.istic.ofbapi.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -51,7 +50,6 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final UserService userService;
 
     @PostMapping("/v1/auth/sign-in")
     public ResponseEntity<JwtAuthenticationResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
