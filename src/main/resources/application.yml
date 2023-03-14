@@ -17,8 +17,6 @@ spring:
 app:
   jwtSecret: secret
   jwtExpirationInMs: 3600000
-  upload:
-    dir: /uploads
 cors:
   allowedOrings: '*'
 

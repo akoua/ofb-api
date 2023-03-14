@@ -16,16 +16,26 @@ import java.nio.file.StandardCopyOption;
 
 @Service
 public class FileServiceImpl implements FileService {
-    
+
     @Value("${app.upload.dir}")
     private String uploadDir;
+    private final Path root = Paths.get("uploads");
+
+    @Override
+    public void init() {
+        try {
+            Files.createDirectories(root);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not initialize folder for upload!");
+        }
+    }
 
     @Override
     public String uploadFile(MultipartFile file) {
         String fileName = file.getOriginalFilename();
         try {
-            Path path = Paths.get(uploadDir + fileName);
-            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            Files.createDirectories(root);
+            Files.copy(file.getInputStream(), root.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
@@ -35,8 +45,8 @@ public class FileServiceImpl implements FileService {
     @Override
     public Resource downloadFile(String fileName) {
         try {
-            Path path = Paths.get(uploadDir + fileName);
-            Resource resource = new UrlResource(path.toUri());
+            Path file = root.resolve(fileName);
+            Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
                 return resource;
             } else {
