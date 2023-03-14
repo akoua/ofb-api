@@ -1,7 +1,6 @@
 package com.istic.ofbapi.service.impl;
 
 import com.istic.ofbapi.service.FileService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -17,8 +16,6 @@ import java.nio.file.StandardCopyOption;
 @Service
 public class FileServiceImpl implements FileService {
 
-    @Value("${app.upload.dir}")
-    private String uploadDir;
     private final Path root = Paths.get("uploads");
 
     @Override
