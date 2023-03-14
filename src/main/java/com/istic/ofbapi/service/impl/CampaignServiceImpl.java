@@ -58,7 +58,7 @@ public class CampaignServiceImpl implements CampaignService {
                 .orElseThrow(() -> new ResourceNotFoundException(USER, ID, currentUser.getId()));
 
         initTestData(user);
-        
+
         AppUtils.validatePageNumberAndSize(page, size);
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
         Page<Campaign> campaignPage = campaignRepository.findAll(pageable);
@@ -74,20 +74,26 @@ public class CampaignServiceImpl implements CampaignService {
         if (campaignRepository.count() == 0) {
             Area area = new Area("Rennes", "Bretagne", "France");
 
-            Taxon taxon = taxonRepository.save(new Taxon(TaxonType.PLANT, "Mon taxon"));
+            Taxon taxon = taxonRepository.save(new Taxon(TaxonType.ANIMAL, "Insecte"));
+            Taxon taxon2 = taxonRepository.save(new Taxon(TaxonType.PLANT, "Dicotylédone"));
 
             List<Taxon> taxons = Collections.singletonList(taxon);
+            List<Taxon> taxons2 = Collections.singletonList(taxon2);
 
-            Campaign c1 = new Campaign("Ma campagne", "Description", taxons, area, new Date(2023, 12, 12), new Date(2023, 12, 12));
-            Campaign c2 = new Campaign("Ma campagne2", "Description2", taxons, area, new Date(2023, 11, 12), new Date(2023, 12, 12));
 
-            campaignRepository.saveAll(Arrays.asList(c1, c2));
+            Campaign c1 = new Campaign("Campagne de recensement d'abeilles", "A la découverte des abeilles !", taxons, area, new Date(2023, 12, 12), new Date(2023, 12, 12));
+            Campaign c2 = new Campaign("Chasses aux papillons", "Les papillons sont formidables", taxons, area, new Date(2023, 11, 12), new Date(2023, 12, 12));
+            Campaign c3 = new Campaign("Trouve ton cactus", "Les cactus ça piquent !", taxons2, area, new Date(2023, 11, 12), new Date(2023, 12, 12));
 
-            List<String> photos = Arrays.asList("https://jardinage.lemonde.fr/images/dossiers/categories3/racedecien-083123-650-325.jpg", "https://media.istockphoto.com/id/1213516345/fr/photo/crazy-regardant-le-chien-de-collie-de-fronti%C3%A8re-noir-et-blanc-disent-regardant-attentivement.jpg?s=612x612&w=0&k=20&c=5PoFiTkaUzbpcLymFyKop3vbkodHksibg3dLPf7UNBg=");
+            campaignRepository.saveAll(Arrays.asList(c1, c2, c3));
 
-            Sheet sheet = new Sheet("Mon sheet", c1, user, "Description", photos, -1.677793, 48.117268, null);
+            List<String> photosBees = Arrays.asList("bee1.png", "bee2.png", "bee3.png");
+            List<String> photosCactus = Arrays.asList("cactus.png");
 
-            sheetRepository.save(sheet);
+            Sheet sheet = new Sheet("Une abeille européenne", c1, user, "Il est agréable de découvrir la beauté des insectes qui nous entourent. Les abeilles européennes font partie de ces créatures fascinantes. Avec leurs rayures noires et jaunes, elles sont facilement reconnaissables et très jolies à observer. Elles sont également importantes pour la pollinisation des plantes et pour maintenir l'équilibre de notre écosystème. C'est pourquoi il est important de les protéger et de préserver leur habitat naturel. La nature est pleine de merveilles, et apercevoir une abeille européenne est une expérience qui nous rappelle la beauté et la diversité de notre environnement.", photosBees, -1.677793, 48.117268, null);
+            Sheet sheet2 = new Sheet("Très rare cactus de noël", c3, user, "La découverte d'une espèce rare de cactus de Noël est une expérience passionnante pour les amoureux de la nature. Ces plantes sont appréciées pour leurs fleurs colorées et leur capacité à fleurir pendant les mois d'hiver, ajoutant une touche de beauté à la saison des fêtes. La découverte d'une espèce rare de cactus de Noël est un événement spécial car cela peut aider à élargir notre compréhension de la diversité des plantes et de leur adaptation à des environnements différents. Cela peut également aider à sensibiliser à la nécessité de protéger et de préserver les habitats naturels des plantes. La nature est riche en trésors cachés, et la découverte d'une espèce rare de cactus de Noël est une occasion de célébrer cette richesse et de continuer à explorer les merveilles de notre monde naturel.", photosCactus, -1.677793, 48.117268, null);
+
+            sheetRepository.saveAll(Arrays.asList(sheet, sheet2));
         }
     }
 

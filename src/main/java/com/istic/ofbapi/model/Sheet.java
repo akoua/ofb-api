@@ -24,12 +24,12 @@ public class Sheet extends DateAudit {
     @ManyToOne
     @JoinColumn(name = "campaign_id")
     private Campaign campaign;
-    
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @ElementCollection
